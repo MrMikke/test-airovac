@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_move_form_inherit_view">
+            <field name="name">view.move.form.inherit.view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <group id="other_tab_group" position="inside">
+                    <group string="XML Cargado"
+                           attrs="{'invisible': [('type', 'in', ('out_invoice','out_refund'))]}">
+                        <field name="xml_filename" invisible="1"/>
+                        <field name="xml_file" filename="xml_filename" widget="binary"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+    </data>
+</odoo>

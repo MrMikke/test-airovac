@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="fix_qr_sello" inherit_id="l10n_mx_edi.report_invoice_document_mx">
+        <xpath expr="//div[@id='complement']" position="replace" >
+                    <div class="row" id="complement">
+                        <div class="col-3" style="height: 175px !important;">
+                            <t t-set="sello" t-value="xml.get('Sello', 'No identificado')[-8:]"/>
+                            <img   alt="Barcode" t-att-src="'/report/barcode/?type=QR&amp;value=%s' % quote_plus(                             'https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?' + keep_query(                                 re=o.l10n_mx_edi_cfdi_supplier_rfc, rr=o.l10n_mx_edi_cfdi_customer_rfc,                                 tt='%.*f' % (o.currency_id.decimal_places, o.l10n_mx_edi_cfdi_amount), id=o.l10n_mx_edi_cfdi_uuid)                                 + '&amp;fe=%s' % quote_plus(                                     sello, 'utf-8', 'strict', '=/').replace('%2B', '+'))"
+                             style="height: 100% !important; width: 175px !important" />
+                        </div>
+                        <div class="complement-details col-9">
+                            <div class="digital-stamp">
+                                <span>Digital stamp of the emitter</span>
+                            </div>
+                            <div class="digital-stamp-content">
+                                <span t-esc="xml.get('sello', xml.get('Sello', 'No identificado'))"/>
+                            </div>
+                            <div class="digital-stamp">
+                                <span>Digital stamp SAT</span>
+                            </div>
+                            <div class="digital-stamp-content">
+                                <span t-esc="tfd.get('selloSAT', tfd.get('SelloSAT', 'No identificado'))"/>
+                            </div>
+                            <div class="digital-stamp">
+                                <span>Original chain complement of digital certification SAT</span>
+                            </div>
+                            <div class="digital-stamp-content">
+                                <span class="nowrap" t-esc="tfd_original_string"/>
+                            </div>
+                            <div t-if="xml.Emisor.xpath('cfdi:ExpedidoEn', namespaces=xml.nsmap)" class="digital-stamp">
+                                <span>Issued from</span>
+                            </div>
+                            <div t-if="xml.Emisor.xpath('cfdi:ExpedidoEn', namespaces=xml.nsmap)" class="digital-stamp-content">
+                                <span t-esc="' | '.join([ '%s: %s' % (key, value) for key, value in xml.Emisor.ExpedidoEn.items()])"/>
+                            </div>
+                            <div class="digital-stamp">
+                                <span>Extra Info</span>
+                            </div>
+                            <div class="digital-stamp-content">
+                                <span>Emitter certificate:</span> <span t-esc="xml.get('noCertificado', xml.get('NoCertificado'))"/>
+                                <span> | SAT Certificate:</span> <span t-esc="tfd.get('NoCertificadoSAT')"/>
+                                <span> | Expedition place:</span> <span t-esc="xml.get('LugarExpedicion')"/>
+                                <span> | Fiscal Regime:</span><span t-esc="xml.Emisor.get('RegimenFiscal', '')"/>
+                                <span> | Emission Date:</span> <span t-esc="xml.get('fecha', xml.get('Fecha', '')).replace('T', ' ')"/>
+                                <span> | Certification Date:</span> <span t-esc="tfd.get('FechaTimbrado', '').replace('T', ' ')"/>
+                                <span> | Fiscal Folio:</span> <span t-esc="tfd.get('UUID')"/>
+                            </div>
+                            <div class="digital-stamp-content text-center">
+                                <strong>This document is a printed representation of a CFDI</strong>
+                            </div>
+                        </div>
+                    </div>
+        </xpath>
+    </template>
+
+</odoo>
+

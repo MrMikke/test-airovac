@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+
+
+    <template id="remube_num_pedimento_mx" inherit_id="l10n_mx_edi.report_invoice_document_mx">
+        <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[1]//t[1]" position="replace" >
+
+        </xpath>
+    </template>
+
+    <template id="num_pedimento_invoice" inherit_id="account.report_invoice_document">
+        <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]" position="after" >
+            <t t-if="line.l10n_mx_edi_customs_number">
+                <tr class="font-italic o_line_note">
+                    <td colspan="99">
+                        Pedimentos:
+                            <ul>
+                                <t t-foreach="line.l10n_mx_edi_customs_number.split(',') if line.l10n_mx_edi_customs_number else []" t-as="pedimento">
+                                    <li><span t-esc="pedimento"/></li>
+                                </t>
+                            </ul>
+                   </td>
+                </tr>
+            </t>
+        </xpath>
+        <xpath expr="//p[@name='comment']" position="replace" >
+            <p t-if="o.narration" name="comment" style="font-family: verdana !important;font-weight: normal !important; font-size: 9pt;!important text-align: justify !important ;" >
+<!--                        <t t-raw ="o.narration"/>-->
+            </p>
+        </xpath>
+
+        <xpath expr="//div[@t-if='o.partner_id.vat']" position="before">
+            <t t-if="o.l10n_mx_edi_cfdi_name != False">
+                <t t-if="('RINV' not in o.l10n_mx_edi_cfdi_name) and ('INV' in o.l10n_mx_edi_cfdi_name)">
+                    <span>INGRESO</span>
+                </t>
+                <t t-if="'RINV' in o.l10n_mx_edi_cfdi_name">
+                    <span>EGRESO</span>
+                </t>
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@t-if='o.partner_id.vat']" position="replace">
+            <div t-if="o.partner_id.vat" >
+                        <t t-if="o.company_id.country_id.vat_label" t-esc="o.company_id.country_id.vat_label" id="inv_tax_id_label"/>
+                        <t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/></div>
+        </xpath>
+
+        <xpath expr="//div[@id='informations']" position="after">
+            <t t-if="o.l10n_mx_edi_origin != False">
+                <p><span class="text-muted">CFDI Origen:</span> <t t-esc="o.l10n_mx_edi_origin" /> </p>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="report_purchaseorder_add_currency" inherit_id="purchase.report_purchaseorder_document">
+        <xpath expr="//div[@id='informations']" position="inside">
+            <div  class="col-3 bm-2">
+                <strong>Moneda:</strong>
+                    <p t-field="o.currency_id.name" class="m-0"/>
+            </div>
+        </xpath>
+    </template>
+
+
+
+
+</odoo>
+

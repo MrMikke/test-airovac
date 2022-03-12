@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_step_multiplier,access_step_multiplier,model_step_multiplier,base.group_user,1,1,1,1
+access_step_multiplier_line,access_step_multiplier_line,model_step_multiplier_line,base.group_user,1,1,1,1
+access_producte_class,access_producte_class,model_producte_class,base.group_user,1,1,1,1
+
+

@@ -1,0 +1,6 @@
+<odoo>
+    <record id="group_nom_options" model="res.groups">
+            <field name="name">Gerente</field>
+            <field name="comment">Gerente</field>
+        </record>
+</odoo>

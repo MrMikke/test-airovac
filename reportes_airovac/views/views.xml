@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="addons\extra-addons\prueba.list">
+      <field name="name">addons\extra-addons\prueba list</field>
+      <field name="model">addons\extra-addons\prueba.addons\extra-addons\prueba</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="addons\extra-addons\prueba.action_window">
+      <field name="name">addons\extra-addons\prueba window</field>
+      <field name="res_model">addons\extra-addons\prueba.addons\extra-addons\prueba</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="addons\extra-addons\prueba.action_server">
+      <field name="name">addons\extra-addons\prueba server</field>
+      <field name="model_id" ref="model_addons\extra-addons\reporte_addons\extra-addons\prueba"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="addons\extra-addons\prueba" id="addons\extra-addons\prueba.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="addons\extra-addons\prueba.menu_1" parent="addons\extra-addons\prueba.menu_root"/>
+    <menuitem name="Menu 2" id="addons\extra-addons\prueba.menu_2" parent="addons\extra-addons\prueba.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="addons\extra-addons\prueba.menu_1_list" parent="addons\extra-addons\prueba.menu_1"
+              action="addons\extra-addons\prueba.action_window"/>
+    <menuitem name="Server to list" id="addons\extra-addons\prueba" parent="addons\extra-addons\prueba.menu_2"
+              action="addons\extra-addons\prueba.action_server"/>
+-->
+  </data>
+</odoo>

@@ -1,0 +1,37 @@
+
+<odoo>
+     <data>
+      <record id="product_supplierinfo_from_inherit" model="ir.ui.view">
+            <field name="name">product.supplierinfo_from_inherit</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_form_view" />
+            <field name="arch" type="xml">
+                 <xpath expr="/form/group[1]/group[2]/div[1]" position="after">
+                    <field name="efecto_mult_std"/>
+                     <field name="efecto_price_list"/>
+                  </xpath>
+            </field>
+         </record>
+
+        <record id="purchase_purchase_order_form_inherit_efecto" model="ir.ui.view">
+       <field name="name">purchase.purchase_order_form_inherit_efecto</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='order_line']/tree[1]/field[@name='product_qty']" position="after">
+                    <field name="e_mult_std"/>
+                  </xpath>
+                  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='order_line']/tree[1]/field[@name='price_unit']" position="before">
+                    <field name="e_precio_lista" readonly="1" force_save="1" />
+                  </xpath>
+                  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='order_line']/tree[1]/field[@name='price_unit']" position="attributes">
+                      <attribute name="string">Precio ExWork</attribute>
+                  </xpath>
+                  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='order_line']/tree[1]/field[@name='taxes_id']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                  </xpath>
+            </field>
+         </record>
+
+    </data>
+</odoo>

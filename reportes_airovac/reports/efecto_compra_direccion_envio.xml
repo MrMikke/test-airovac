@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+
+
+    <template id="efecto_compra_direccion_envio" inherit_id="purchase_stock.report_purchaseorder_document">
+        <xpath expr="//t[@t-set='information_block'']" position="replace" >
+               <strong>Shipping address:</strong>
+                    <div >
+                         <p t-field="o.notes"/>
+                    </div>
+        </xpath>
+    </template>
+
+</odoo>
+
+

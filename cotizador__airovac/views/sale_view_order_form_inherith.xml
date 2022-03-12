@@ -1,0 +1,178 @@
+<odoo>
+    <data>
+        <record id="sale_view_order_form_inherith" model="ir.ui.view">
+            <field name="name">sale.view.order.form.inherith</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+
+                <!--Botones detalles y marcar como perdido -->
+                <xpath expr="//header" pogitsition='inside'>
+                    <button string="Marcar como perdido" type="object" name="marcar_perido" states="draft,sent,sale" />
+                    <button string="ver detalles" type="object" name="mostrar_detalles"  attrs="{'invisible': [('hide_fields', '=', True)]}" groups="cotizador__airovac.group_nom_options" />
+                    <button string="ocultar detalles" type="object" name="mostrar_detalles"   attrs="{'invisible': [('hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options" />
+                </xpath>
+
+                <!--Mostrarmensaje perdido -->
+                <xpath expr="//field[@name='name']" position="after">
+                    <h2  style="color:red;">
+                        <field name="perdido" attrs="{'invisible': [('perdido', '!=','Perdido')]}"/>
+                    </h2>
+                </xpath>
+                <!-- Descripcion -->
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="e_desciption"/>
+                </xpath>
+                <!--Fehca prevista de cierre -->
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="e_fecha_prevista_cierre"/>
+                </xpath>
+
+                <!-- CAMPOS: CAMBIO DE TAPA-->
+                <xpath expr="//form/sheet/group[1]/group[1]" position="inside">
+                    <hr style="whidth=100%;"/>
+                    <field name="cambio_etapa_chebox" />
+                    <field name="step_multiplier_id" attrs="{'readonly':[('cambio_etapa_chebox','=',False)]}" options="{'no_create_edit':True, 'no_create':True, 'no_open':True}" />
+                    <field name="cambio_etapa" attrs="{'invisible': True}"  />
+                    <field name="contador" attrs="{'invisible': True}" />
+
+                </xpath>
+                <!-- CAMPOS: Tipo de imperecion y etiquetas-->
+                <xpath expr="//form/sheet/group[1]/group[2]" position="inside">
+                    <hr style="whidth=100%;"/>
+                    <field name="breakdown"  />
+                    <field name="e_etiqueta_title_a" />
+                    <field name="e_etiqueta_title_b" />
+                </xpath>
+                <!-- Ocultamos descripción-->
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+
+                <!-- Campos en orden segun la peticion-->
+                <!-- G. (AGRUPAR)-->
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='sequence']" position="after">
+                    <field name="e_asociar" options='{"bg_color": "LightSeaGreen: colored == 1;  DarkKhaki: colored == 2 "}'  />
+                </xpath>
+                <!-- CAMPOS OCULTOS USADOS PARA AGRUPAR-->
+                <xpath expr="//field[@name='e_asociar']" position="after">
+                    <field name="principal" optional="hide" attrs='{"column_invisible": True}' />
+                    <field name="grupo" attrs='{"column_invisible": True}'  />
+                    <field name="colored" attrs='{"column_invisible": True}' />
+                    <field name="id" attrs='{"column_invisible": True}' />
+                    <field name="e_por_debajo" attrs='{"column_invisible": True}' />
+                    <field name="e_partida" />
+                   </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom_qty']" position="after">
+                    <field name="discount"/>
+                    <field name="e_multiplicador"/>
+                    <field name="e_mult_min" readonly="1" force_save="1" groups="cotizador__airovac.group_nom_options" optional="hide"/>
+                    <field name="e_etiqueta_line_a" />
+                    <field name="e_etiqueta_line_b" />
+                    <field name="e_precio_de_lista" readonly="1" force_save="1" />
+                </xpath>
+
+
+<!--                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_unit']" position="after">-->
+<!--                    -->
+<!--                </xpath>-->
+
+
+
+
+
+
+
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_unit']" position="after">
+                     <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_subtotal']" position="move" />
+                    <field name="e_p_unit_a" attrs="{'column_invisible': [('parent.breakdown', '=', True)]}"  options='{"bg_color": "LightCyan:colored == 1 and principal == 1 ;  LightYellow:colored == 2 and principal == 1 "}' />
+                     <field name="e_subtotal_no_des" readonly="1" force_save="1"  attrs="{'column_invisible': [('parent.breakdown', '=', True)]}" options='{"bg_color": "LightCyan:colored == 1 and principal == 1 ;  LightYellow:colored == 2 and principal == 1 "}' />
+                    <field name="e_t_e"/>
+                     <field name="e_te_line_min" optional="hide"/>
+                    <field name="e_te_line_max" optional="hide"/>
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='customer_lead']" position="move" />
+                    <field name="e_estimado_pro_l" readonly="1" force_save="1" />
+                    <field name="e_marca" readonly="1" />
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='tax_id']" position="move"/>
+<!--                    <field name="e_provedor" domain = "[('product_tmpl_id', '=', product_id )]" optional="hide" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options" />-->
+                    <field name="e_mult_std" optional="hide" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options"/>
+                    <field name="e_exwork" optional="hide" readonly="1" force_save="1" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options"/>
+                    <field name="e_importation"   optional="hide" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options" />
+                    <field name="e_igi"  optional="hide" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options"/>
+                    <field name="e_costo_unitario" readonly="1" force_save="1"  optional="hide" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options" />
+                    <field name="e_g_m_l" readonly="1" force_save="1"  optional="hide" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options"/>
+                    <field name="e_costo_total" readonly="1" force_save="1"   optional="hide" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options"/>
+                    <field name="e_costo_total_imp" readonly="1" force_save="1"  optional="hide" attrs="{'column_invisible': [('parent.hide_fields', '=', False)]}" groups="cotizador__airovac.group_nom_options"/>
+                </xpath>
+
+                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_subtotal']" position="replace">
+                    <field name="price_subtotal" readonly="1" force_save="1"   attrs="{'column_invisible': [('parent.breakdown', '=', False)]}" options='{"bg_color": "LightCyan:colored == 1 and principal == 1 ;  LightYellow:colored == 2 and principal == 1 "}'  />
+                 </xpath>
+
+
+
+
+
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_unit']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                    <attribute name="options">{"bg_color": "Pink:e_por_debajo == 1 "}</attribute>
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_subtotal']" position="before">
+                     <field name="e_punto_venta" readonly="1" force_save="1"   attrs="{'column_invisible': [('parent.breakdown', '=', False)]}" options='{"bg_color": "Pink:e_por_debajo == 1 "}'  />
+                </xpath>
+
+
+
+
+
+
+
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='discount'][2]" position="replace"/>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='discount']" position="attributes">
+                    <attribute name="groups">product.group_discount_per_so_line</attribute>
+                    <attribute name="optional">show</attribute>
+                    <attribute name="string">Disc.%</attribute>
+                </xpath>
+
+
+
+                <!--Campos especiales a gerente -->
+                <xpath expr="//group[@name='note_group']" position="before">
+                    <group name="note_group" col="6" groups="cotizador__airovac.group_nom_options">
+                        <group colspan="4">
+                            <field name="hide_fields" invisible="1" />
+                        </group>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            <field name="e_costo_total_imp_obra" widget="monetary"  options='{"currency_field": "currency_id"}' attrs="{'invisible': [('hide_fields', '=', False)]}"/>
+                            <field name="e_costo_total_obra" widget="monetary" options='{"currency_field": "currency_id"}' attrs="{'invisible': [('hide_fields', '=', False)]}"/>
+                            <field name="e_g_m_p"  />
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!--Formulario general-->
+        <record id="sale_order_tree_inherith" model="ir.ui.view">
+            <field name="name">sale.order.tree.inherith</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree[1]/field[@name='name']" position="after">
+                    <field name="e_desciption"></field>
+                </xpath>
+
+                <xpath expr="//tree[1]/field[@name='state']" position="after">
+                    <field name="perdido"  optional="hide"></field>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

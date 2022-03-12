@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="sale_order_portal_content_airovac" inherit_id="sale.sale_order_portal_content">
+
+
+        <xpath expr="//div[@id='introduction']" position="replace" >
+         <div id="introduction" t-attf-class="pb-2 pt-3 #{'card-header bg-white' if report_type == 'html' else ''}">
+
+                <div class="row" style="height: 105px !important;">
+                                    <div class="col-5 text-center"  >
+                                        <!--                                        <img style="max-height: 45px;" alt="Logo" src='/web/binary/company_logo'/>-->
+                                        <img  alt="Logo" t-att-src="'/presupuesto_airovac/static/src/img/logog.png'"
+                                              class="img-fluid" style="vertical-align:middle !important;"/>
+
+                                    </div><!-- DIV 2 IZQUIERDO-->
+                                    <div class="col-2" >
+                                        <!--                                        <img style="max-height: 45px;" alt="Logo" src='/web/binary/company_logo'/>-->
+
+                                    </div><!-- DIV 2 MEDIO-->
+                                    <div class="col-5">
+                                        <div class="oe_structure"></div>
+                                        <h2 style="font-family: verdana !important;font-weight: bold !important; font-size: 18pt;!important">
+                                            <span>Cotización # </span>
+                                            <span  t-field="sale_order.name"></span>
+                                        </h2>
+
+                                        <p style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important; vertical-align:middle !important;" >
+                                            Proyecto: <span  t-field="sale_order.e_desciption"></span>
+                                        </p>
+
+                                    </div> <!-- DIV 4 DERECHO-->
+                                </div> <!-- ROW -->
+        </div>
+
+        </xpath>
+
+        <xpath expr="//section[@id='details']" position="replace" >
+            <section>
+                <table class="table table-sm o_main_table">
+                                    <thead style="color:black !important; font-family: verdana !important;font-weight: normal !important; font-size: 11pt !important;">
+                                        <tr>
+                                            <th width="14%" name="th_partida" class="text-center" style="vertical-align:middle">Partida</th>
+                                            <th width="32%" name="th_description" class="text-center" style="vertical-align:middle">Descripción</th>
+                                            <th width="10%" name="th_etiqueta_a" class="text-center" style="vertical-align:middle; font-size: 10pt !important;" ><span  t-field="sale_order.e_etiqueta_title_a" /></th>
+                                            <th width="10%" name="th_etiqueta_b" class="text-center" style="vertical-align:middle; font-size: 10pt !important;"><span  t-field="sale_order.e_etiqueta_title_b" /></th>
+                                            <th width="8%" name="th_quantity" class="text-center" style="vertical-align:middle">Cantidad</th>
+                                            <th width="8%" name="th_priceunit" class="text-center" style="vertical-align:middle">Precio unitario</th>
+                                            <th width="8%" name="th_subtotal" class="text-center" style="vertical-align:middle">Subtotal  <![CDATA[&nbsp;]]> <t t-esc="sale_order.pricelist_id.currency_id.name"></t></th>
+                                            <th width="10%" name="th_e_t_e" class="text-center" style="vertical-align:middle">T.E</th>
+                                        </tr>
+                                    </thead>
+                                    <!--
+                                    CAF0F8 azul 1
+                                    A6CFD5 ligth blue
+                                    E5E5E5 platinum
+                                    95B8D1 palera cerulean
+                                    93C6D6 darkky
+                                    F0F3F9 -> Colored 1
+                                    -->
+                                    <t t-set="i" t-value="0"/>
+                                    <tbody class="sale_tbody">
+                                        <t t-foreach="sale_order.order_line" t-as="line">
+
+                                            <t t-if = "line.display_type == False" >
+                                                    <t t-if = "sale_order.breakdown != True" >
+                                                        <t t-if = "(line.principal == 1) or (line.grupo == 0 and line.principal == 0) " >
+                                                            <t t-set="i" t-value="i+1"/>
+                                                        </t>
+                                                    </t>
+                                                    <t t-if = "sale_order.breakdown == True" >
+                                                          <t t-set="i" t-value="i+1"/>
+                                                    </t>
+                                                <t t-if = "i%2 == 0" >
+                                                    <tr style="background-color:#F1F4F8;">
+                                                        <td name="td_partida" class="text-center">
+                                                            <div class="row" >
+                                                                <div class="col-12  text-center">
+                                                                    <span style="font-family: verdana !important;font-weight: bold !important; font-size: 10pt !important;" t-field="line.e_partida"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12  text-center">
+                                                                    <t t-if = "line.product_template_id.image_1920 != False" >
+                                                                        <img class="img-fluid" t-att-src="'data:image/png;base64,%s' % to_text(line.product_template_id.image_1920)" style="max-height: 50px;"/>
+                                                                    </t>
+                                                                    <t t-if = "line.product_template_id.image_1920 == False" >
+                                                                        <img class="img-fluid" t-att-src="'/presupuesto_airovac/static/src/img/caja.jpg'" style="max-height: 250px;" />
+                                                                    </t>
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+                                                        <td name="th_description" style="text-align: justify !important ;">
+                                                            <a href="https://airovac-airovactest-1135560.dev.odoo.com"><strong><span style="font-family: verdana !important;font-weight: bold !important; font-size: 10pt !important;" t-field="line.product_template_id.default_code"></span></strong></a>
+                                                            <br/>
+                                                            <p style="font-family: verdana !important;font-weight: normal !important; font-size: 9pt;!important; line-height: 94% !important;">
+                                                                <t t-if = "line.product_template_id.description_sale != False" >
+                                                                     <t t-foreach="line.product_id.product_template_attribute_value_ids" t-as="va">
+                                                                        <t t-esc ="va.name" ></t>
+                                                                    </t>
+                                                                    <t t-esc ="line.product_template_id.description_sale" />
+                                                                </t>
+                                                                <t t-if = "line.product_template_id.description_sale == False" >
+                                                                    <t t-esc ="line.name" />
+                                                                </t>
+                                                            </p>
+                                                        </td>
+                                                        <td name="td_etiqueta_a" class="text-center" style="vertical-align:middle">
+                                                            <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;"  t-field="line.e_etiqueta_line_a"></span>
+                                                        </td>
+                                                        <td name="td_etiqueta_b" class="text-center" style="vertical-align:middle">
+                                                            <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.e_etiqueta_line_b"></span>
+                                                        </td>
+                                                        <td name="td_quantity" class="text-center" style="vertical-align:middle">
+                                                            <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;"  t-field="line.product_uom_qty"></span>
+                                                        </td>
+                                                        <td name="td_priceunit" class="text-center" style="vertical-align:middle">
+                                                            <t t-if = "sale_order.breakdown == True" >
+                                                                  <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.price_unit"  t-options="{'widget': 'monetary', 'display_currency': sale_order.currency_id}" ></span>
+                                                            </t>
+                                                            <t t-if = "sale_order.breakdown != True" >
+                                                                <t t-if = "(line.principal == 1) or (line.grupo == 0 and line.principal == 0) " >
+                                                                    <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.e_p_unit_a"></span>
+                                                                </t>
+                                                            </t>
+
+                                                        </td>
+                                                        <td name="td_subtotal" class="text-center o_price_total" style="vertical-align:middle">
+
+                                                            <t t-if = "sale_order.breakdown == True" >
+                                                                <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" class="oe_currency_value" t-field="line.price_subtotal"></span>
+                                                            </t>
+                                                            <t t-if = "sale_order.breakdown != True" >
+                                                                <t t-if = "(line.principal == 1) or (line.grupo == 0 and line.principal == 0) " >
+                                                                    <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.e_subtotal_no_des"></span>
+                                                                </t>
+                                                            </t>
+                                                        </td>
+
+                                                        <td name="td_e_t_e" class="text-center" style="vertical-align:middle">
+                                                            <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.e_t_e"></span>
+                                                        </td>
+
+                                                    </tr>
+                                                </t>
+
+                                                <t t-if = "i%2 == 1" >
+                                                    <tr class="">
+                                                        <td name="td_partida" class="text-center">
+                                                            <div class="row" >
+                                                                <div class="col-12  text-center">
+                                                                    <span style="font-family: verdana !important;font-weight: bold !important; font-size: 10pt !important;" t-field="line.e_partida"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12  text-center">
+                                                                    <t t-if = "line.product_template_id.image_1920 != False" >
+                                                                        <img class="img-fluid" t-att-src="'data:image/png;base64,%s' % to_text(line.product_template_id.image_1920)" style="max-height: 50px;"/>
+                                                                    </t>
+                                                                    <t t-if = "line.product_template_id.image_1920 == False" >
+                                                                        <img class="img-fluid" t-att-src="'/presupuesto_airovac/static/src/img/caja.jpg'" style="max-height: 250px;" />
+                                                                    </t>
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+                                                        <td name="th_description" style="text-align: justify !important ;">
+                                                             <a href="https://airovac-airovactest-1135560.dev.odoo.com"><strong><span style="font-family: verdana !important;font-weight: bold !important; font-size: 10pt !important;" t-field="line.product_template_id.default_code"></span></strong></a>
+                                                                <br/>
+                                                            <p style="font-family: verdana !important;font-weight: normal !important; font-size: 9pt;!important; line-height: 94% !important;">
+
+                                                                <t t-if = "line.product_template_id.description_sale != False" >
+                                                                    <t t-foreach="line.product_id.product_template_attribute_value_ids" t-as="va">
+                                                                        <t t-esc ="va.name" ></t>
+                                                                    </t>
+                                                                    <t t-esc ="line.product_template_id.description_sale" />
+                                                                </t>
+                                                                <t t-if = "line.product_template_id.description_sale == False" >
+                                                                    <t t-esc ="line.name" />
+                                                                </t>
+                                                            </p>
+                                                        </td>
+                                                        <td name="td_etiqueta_a" class="text-center" style="vertical-align:middle">
+                                                            <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;"  t-field="line.e_etiqueta_line_a"></span>
+                                                        </td>
+                                                        <td name="td_etiqueta_b" class="text-center" style="vertical-align:middle">
+                                                            <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.e_etiqueta_line_b"></span>
+                                                        </td>
+                                                        <td name="td_quantity" class="text-center" style="vertical-align:middle">
+                                                            <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;"  t-field="line.product_uom_qty"></span>
+                                                        </td>
+                                                        <td name="td_priceunit" class="text-center" style="vertical-align:middle">
+                                                            <t t-if = "sale_order.breakdown == True" >
+                                                                 <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.price_unit" t-options="{'widget': 'monetary', 'display_currency': sale_order.currency_id}"></span>
+                                                            </t>
+                                                            <t t-if = "sale_order.breakdown != True" >
+                                                                <t t-if = "(line.principal == 1) or (line.grupo == 0 and line.principal == 0) " >
+                                                                    <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.e_p_unit_a"></span>
+                                                                </t>
+                                                            </t>
+
+                                                        </td>
+                                                        <td name="td_subtotal" class="text-center o_price_total" style="vertical-align:middle">
+
+                                                            <t t-if = "sale_order.breakdown == True" >
+                                                                <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" class="oe_currency_value" t-field="line.price_subtotal"></span>
+                                                            </t>
+                                                            <t t-if = "sale_order.breakdown != True" >
+                                                                <t t-if = "(line.principal == 1) or (line.grupo == 0 and line.principal == 0) " >
+                                                                    <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.e_subtotal_no_des"></span>
+                                                                </t>
+                                                            </t>
+                                                        </td>
+
+                                                        <td name="td_e_t_e" class="text-center" style="vertical-align:middle">
+                                                            <span style="font-family: verdana !important;font-weight: normal !important; font-size: 10pt !important;" t-field="line.e_t_e"></span>
+                                                        </td>
+
+                                                    </tr>
+                                                </t>
+
+
+                                            </t>
+                                            <t t-if = "line.display_type != False" >
+                                                <t t-if = "'line_section' in line.display_type" >
+                                                    <tr class="bg-200 font-weight-bold o_line_section">
+                                                        <td name="td_section_line" colspan="99">
+                                                            <span t-field="line.name"></span>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                                <t t-if = "'line_note' in line.display_type" >
+                                                    <tr  class="font-italic o_line_note">
+                                                        <td name="td_note_line" colspan="99">
+                                                            <span t-field="line.name"></span>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                        </t><!--for-->
+                                    </tbody>
+                                </table>
+                <h1>
+                    replace section
+                </h1>
+
+            </section>
+        </xpath>
+
+    </template>
+
+</odoo>
+

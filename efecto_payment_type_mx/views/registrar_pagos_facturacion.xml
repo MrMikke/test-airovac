@@ -1,0 +1,15 @@
+<odoo>
+        <record model="ir.ui.view" id="view_account_reg_payment_tipo_cambio">
+        <field name="name">view.account.reg.payment.form.tipo_cambio</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="l10n_mx_edi.view_account_payment_form_inh_l10n_mx"/>
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='l10n_mx_edi_payment_method_id']" position="after">
+                    <field name="efecto_payment_type" attrs="{'invisible':  [('efecto_oculta_help', '=', 0)]}" />
+<!--                    <field name="efecto_payment_type_original" readonly="1" attrs="{'invisible':  [('efecto_oculta_help', '=', 0)]}"/>-->
+<!--                    <field name="efecto_base_amount" readonly="1" attrs="{'invisible':  [('efecto_oculta_help', '=', 0)]}" />-->
+                    <field name="efecto_oculta_help" attrs="{'invisible': True}"  />
+                </xpath>
+        </field>
+    </record>
+</odoo>

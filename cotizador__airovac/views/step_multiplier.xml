@@ -1,0 +1,135 @@
+
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="step_mult_form_view">
+            <field name="name">step.form</field>
+            <field name="model">step.multiplier</field>
+            <field name="arch" type="xml">
+                <form string="Course Form">
+                            <sheet>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                </group>
+
+                                <notebook>
+                                    <page string="Multiplicadores">
+                                        <field name="e_step_multiplier_line_ids">
+                                             <tree editable="bottom">
+                                                <field name="e_marca"/>
+                                                <field name="e_multiplicador"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+                                </notebook>
+                            </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="step_mult_tree_view">
+            <field name="name">step.tree</field>
+            <field name="model">step.multiplier</field>
+            <field name="arch" type="xml">
+                <tree string="Course Tree">
+                    <field name="name"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+      <record model="ir.actions.act_window" id="step_list_action">
+            <field name="name">Courses</field>
+            <field name="res_model">step.multiplier</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create the first course
+                </p>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="step_mult_line_form_view">
+            <field name="name">step.multiplier.line.form</field>
+            <field name="model">step.multiplier.line</field>
+            <field name="arch" type="xml">
+                <form string="Course Form">
+                            <sheet>
+                                <group>
+                                    <field name="e_marca"/>
+                                    <field name="e_multiplicador"/>
+                                </group>
+                            </sheet>
+                </form>
+            </field>
+        </record>
+
+       <record model="ir.ui.view" id="step_mult_line_tree_view">
+            <field name="name">step.multiplier.line.tree</field>
+            <field name="model">step.multiplier.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="e_marca"/>
+                    <field name="e_multiplicador"/>
+                </tree>
+            </field>
+        </record>
+
+     <record model="ir.actions.act_window" id="step_line_list_action">
+            <field name="name">Multiplier Line</field>
+            <field name="res_model">step.multiplier.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create the first line
+                </p>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="producte_class_form_view">
+            <field name="name">producte.class.form</field>
+            <field name="model">producte.class</field>
+            <field name="arch" type="xml">
+                <form string="Marca  ">
+
+                            <sheet>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="e_mult_min"/>
+                                    <field name="e_mult_std"/>
+                                </group>
+
+<!--                                <notebook>-->
+<!--                                    <page string="Multiplicadores">-->
+<!--                                        <field name="e_step_multiplier_line_ids">-->
+<!--                                             <tree editable="bottom">-->
+<!--                                                <field name="e_marca"/>-->
+<!--                                                <field name="e_multiplicador"/>-->
+<!--                                            </tree>-->
+<!--                                        </field>-->
+<!--                                    </page>-->
+<!--                                </notebook>-->
+                            </sheet>
+
+                </form>
+            </field>
+        </record>
+
+         <record model="ir.ui.view" id="producte_class_tree_view">
+            <field name="name">producte.class.tree</field>
+            <field name="model">producte.class</field>
+            <field name="arch" type="xml">
+                <tree string="Marcas / Multiplicadores mínimos" >
+                    <field name="name"/>
+                    <field name="e_mult_min"/>
+                    <field name="e_mult_std"/>
+                </tree>
+            </field>
+        </record>
+
+
+    </data>
+
+</odoo>

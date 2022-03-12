@@ -1,0 +1,264 @@
+<odoo>
+    <template id="reporte_ventas_presupuesto_pedido">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class = "page">
+
+                    <div class="header o_company_1_layout">
+                        <div class="row">
+                            <div class="col-3 mb4">
+                                <img style="max-height: 45px;" alt="Logo" src='/web/binary/company_logo'/>
+                            </div>
+
+                        </div>
+                        <div class="row zero_min_height">
+                            <div class="col-12">
+                                <div style="border-bottom: 1px solid black;"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-6" name="company_address">
+                                <div>
+                                    <address class="mb-0" itemscope="itemscope" >
+                                        <div>
+                                            <span itemprop="name" t-field="doc.company_id.name"></span>
+                                        </div>
+                                        <div itemprop="address" itemscope="itemscope" >
+                                            <div class="d-flex align-items-baseline">
+
+                                                <div class="w-100" itemprop="streetAddress">
+                                                    <t t-esc ="doc.company_id.street_name" />
+                                                     <t t-esc ="doc.company_id.street_number" />
+                                                     <t t-esc ="doc.company_id.street_number2" /><br/>
+                                                     <t t-esc ="doc.company_id.zip" />
+                                                     <t t-esc ="doc.company_id.city" />,
+                                                     <t t-esc ="doc.company_id.state_id.code" /><br/>
+                                                     <t t-sec ="doc.company_id.country_id"></t>
+
+<!--                                                    Membrillo 302 <br/>02820 Ciudad de México, DIF<br/>México -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="article o_report_layout_standard o_company_1_layout" data-oe-model="sale.order" data-oe-id="18" data-oe-lang="es_ES">
+                        <div class="address row">
+                            <div  class="col-6">
+                            </div>
+                            <div name="address" class="col-5">
+                                <div>
+                                    <address class="mb-0" itemscope="itemscope" >
+                                        <div>
+
+                                            <span itemprop="name" t-field="doc.partner_id.parent_id.name"></span><br/>
+                                            <span itemprop="name" t-field="doc.partner_id.name"></span>
+                                        </div>
+                                        <div itemprop="address" itemscope="itemscope" >
+                                            <div class="d-flex align-items-baseline">
+                                                 <div class="w-100" itemprop="streetAddress">
+                                                     <t t-esc ="doc.partner_id.street_name" />
+                                                     <t t-esc ="doc.partner_id.street_number" />
+                                                     <t t-if = "doc.partner_id.street_number2">
+                                                        /<t t-esc ="doc.partner_id.street_number2" /><br/>
+                                                     </t>
+                                                     <t t-esc ="doc.partner_id.zip" />
+                                                     <t t-esc ="doc.partner_id.city_id.name" />
+                                                      <t t-if = "doc.partner_id.state_id.code">
+                                                          , <t t-esc ="doc.partner_id.state_id.code" />
+                                                     </t>
+
+                                                    <br/>
+                                                     <t t-sec ="doc.partner_id.country_id"></t>
+                                                     </div>
+
+                                            </div>
+                                        </div>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="oe_structure"></div>
+                            <h2 class="mt16">
+                                <span>Cotización # </span>
+                                <span t-field="doc.name"></span>
+                            </h2>
+                            <div class="row mt32 mb32" id="informations">
+                                <div class="col-auto mw-100 mb-2">
+                                    <strong>Fecha de cotización:</strong>
+                                    <p class="m-0">
+                                        <span t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'  ></span>
+                                    </p>
+                                </div>
+                                <div class="col-auto mw-100 mb-2">
+                                    <strong>Fecha de expiración:</strong>
+                                    <p class="m-0">
+                                        <span t-field="doc.validity_date"   ></span>
+                                    </p>
+                                </div>
+                                <div class="col-auto mw-100 mb-2">
+                                    <strong>Comercial:</strong>
+                                    <p class="m-0"><span t-field="doc.create_uid.name"></span></p>
+                                </div>
+                            </div>
+
+                        <!--Tabla-->
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th width="10%" name="th_partida" class="text-center" style="vertical-align:middle">Partida</th>
+                                    <th width="40%" name="th_description" class="text-center" style="vertical-align:middle">Descripción</th>
+                                    <th width="10%" name="th_quantity" class="text-center" style="vertical-align:middle">Cantidad</th>
+                                    <th width="12%" name="th_priceunit" class="text-center" style="vertical-align:middle">Precio unitario</th>
+                                    <th width="16%" name="th_e_t_e" class="text-center" style="vertical-align:middle">T.E</th>
+                                    <th width="12%" name="th_subtotal" class="text-center" style="vertical-align:middle">Subtotal  <![CDATA[&nbsp;]]> <t t-esc="doc.pricelist_id.currency_id.name"></t></th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody class="sale_tbody">
+                                <t t-foreach="doc.order_line" t-as="line">
+                                    <t t-if = "line.display_type == False" >
+                                        <tr class="">
+                                            <td name="td_partida">
+                                                <span style="font-size: 15px" t-field="line.e_partida"></span>
+
+                                            </td>
+                                            <td name="td_name">
+                                                <strong><span style="font-size: 15px" t-field="line.product_template_id.default_code"></span></strong><br/>
+                                                <t t-if = "line.product_template_id.description_sale != False" >
+
+                                                    <span style="font-size: 13px" t-field="line.product_template_id.description_sale"></span>
+                                                </t>
+                                                <t t-if = "line.product_template_id.description_sale == False" >
+                                                    <span style="font-size: 13px" t-field="line.product_template_id.name"></span>
+                                                </t>
+
+                                            </td>
+                                            <td name="td_quantity" class="text-center" style="vertical-align:middle">
+                                                <span t-field="line.product_uom_qty"></span>
+                                            </td>
+                                            <td name="td_priceunit" class="text-center" style="vertical-align:middle">
+                                                <span t-field="line.price_unit"></span>
+                                            </td>
+                                            <td name="td_e_t_e" class="text-center" style="vertical-align:middle">
+                                                <span t-field="line.e_t_e"></span>
+                                            </td>
+                                            <td name="td_subtotal" class="text-center o_price_total" style="vertical-align:middle">
+                                                <span class="oe_currency_value" t-field="line.price_subtotal"></span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if = "line.display_type != False" >
+                                        <t t-if = "'line_section' in line.display_type" >
+                                            <tr class="bg-200 font-weight-bold o_line_section">
+                                                <td name="td_section_line" colspan="99">
+                                                    <span t-field="line.name"></span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if = "'line_note' in line.display_type" >
+                                            <tr  class="font-italic o_line_note">
+                                                <td name="td_note_line" colspan="99">
+                                                    <span t-field="line.name"></span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t><!--for-->
+                            </tbody>
+                        </table>
+
+                            <div class="clearfix" name="so_total_summary">
+                                <div id="total" class="row" name="total">
+                                    <div class="col-8">
+
+                                    </div>
+                                    <div class="col-4">
+                                        <table class="table table-sm">
+                                            <tbody><tr class="border-black o_subtotal" style="">
+                                                <td name="td_amount_untaxed_label"><strong>Subtotal <![CDATA[&nbsp;]]> <t t-esc="doc.pricelist_id.currency_id.name"></t> </strong></td>
+                                                <td name="td_amount_untaxed" class="text-right">
+                                                    <span><span class="oe_currency_value" t-field="doc.amount_untaxed"></span></span>
+                                                </td>
+                                            </tr>
+
+                                                <tr style="">
+
+                                                    <td name="td_amount_by_group_label">
+                                                        <span>IVA 16% </span>
+                                                    </td>
+                                                    <td  class="text-right o_price_total">
+                                                        <span data-oe-type="monetary" ><span class="oe_currency_value" t-field="doc.amount_tax"></span></span>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr class="border-black o_total">
+                                                    <td name="td_amount_total_label"><strong>Total  <![CDATA[&nbsp;]]> <t t-esc="doc.pricelist_id.currency_id.name"></t> </strong></td>
+                                                    <td name="td_amount_total" class="text-right">
+                                                        <span><span class="oe_currency_value" t-field="doc.amount_total"></span></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure"></div>
+
+
+
+                            <div style="margin-top:5px;"  class="col-12 text-left" name="information_block">
+                                <h5> Condiciones Generales:</h5>
+                                » Los precios son en dólares americanos y se cobrarán en dólares, ó al tipo de cambio de venta bancario vigente a la fecha del pago <br/>
+                                » Los precios no incluyen el 16% de I.V.A. <br/>
+                                » Las condiciones de pago son: 50% anticipo, 50% contra aviso de embarque <br/>
+                                » Todos los pedidos de productos "made to order", especiales ó configurables, tales como válvulas de mariposa, válvulas superiores a 2.5", UMAS, o cualquier otro producto
+                                    que se indique lo requiera, deberán colocarse con anticipo, sin excepción, aún si las condiciones del punto anterior no lo indiquen. <br/>
+                                » La entrega del material ó embarque, se realizará una vez confirmado el pago en firme en nuestras cuentas bancarias.<br/>
+
+                                » LOS EQUIPOS SE COTIZAN LAB
+                                » Nuestro almacén en Monterrey<br/>
+                                » En caso que esta cotización se exprese LAB en una ubicación distinta a nuestras instalaciones, el tiempo de entrega será de 1 a 5 días hábiles adicionales a lo expresado en cada partida.<br/>
+                                » Toda solicitud de cambio logístico que sea solicitada por parte del cliente, será cotizada por parte de AiroVAC, y ejecutada, previa autorización y pago por parte del cliente.<br/>
+
+                                » Tiempos de entrega: los indicados en cada partida, salvo previa venta; y son a partir de la recepción de su Orden de Compra y Anticipo<br/>
+                                » Las existencias de esta propuesta, pudieran no estar disponibles al momento de su compra; en dado caso, se indicará el tiempo de entrega una vez colocado el pedido al fabricante.<br/>
+                                » Validez de cotización: 30 días<br/>
+                                » La garantía de los equipos depende de la marca y modelo, y va desde 1 hasta 5 años a patir de la entrega.<br/>
+                                Sin más por el momento quedo a sus ordenes para cualquier aclaración.<br/>
+                                Atentamente
+
+                            </div>
+
+                            <div style="margin-top:5px;" class="col-12 text-left" name="information_block">
+                                <h5> Términos y condiciones:</h5>
+                                <t t-esc="doc.note"></t>
+
+                            </div>
+
+                    </div>
+
+                    <div class="footer o_standard_footer o_company_1_layout">
+                        <div class="text-center" style="border-top: 1px solid black; font-size: 13px;">
+                           <span>  AiroVAC</span>
+                           <span> Proyectos en Ventilación, Agua y Control<br/></span>
+                           <span> Tel. Mty (81) 8333 7738, D.F. (55) 5005 9893, Gdl (33) 8995 7135, Mer (999) 801 1300, Pue (222) 644 0560<br/>
+                            </span>
+                           <span> e.mail: www.airovac.com<br/></span>
+                            Página <span class="page"/> / <span class="topage"/>
+
+                        </div>
+                    </div>
+                </div><!--page-->
+            </t>
+        </t>
+    </template>
+</odoo>
